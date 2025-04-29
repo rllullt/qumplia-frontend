@@ -1,20 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FaBars, FaXmark } from 'react-icons/fa6';
 
 function Navbar() {
+  const [openNavigation, setOpenNavigation] = useState(false);
+
+  const toggleNavigation = () => {
+    setOpenNavigation(!openNavigation);
+  };
+
   return (
-    <div className="navbar bg-base-100">
-      <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl">QumpliA</a>
+    <div className="fixed top-0 left-0 w-full z-50 border-b bg-base-100 backdrop-blur-sm">
+      <div className="flex items-center justify-between px-5 lg:px-10 py-4">
+        <Link to="/" className="btn btn-ghost normal-case text-xl">Qumpl<b className="-mx-1">IA</b></Link>
+
+        {/* Botón hamburguesa */}
+        <button
+          className="btn btn-ghost lg:hidden"
+          onClick={toggleNavigation}
+        >
+          {openNavigation && (<FaXmark />)}
+          {!openNavigation && (<FaBars />)}
+        </button>
+
+        {/* Menú desktop */}
+        <nav className="hidden lg:flex">
+          <ul className="menu menu-horizontal px-1 items-center">
+            <li><Link to="/">Inicio</Link></li>
+            <li><a>Nosotros</a></li>
+            <li><Link to="/dashboard">Servicios</Link></li>
+            <li><a>FAQ</a></li>
+            <li><button className="btn btn-primary btn-sm">Login</button></li>
+            <li><button className="btn btn-primary btn-sm rounded-full mx-2">Agenda una demo</button></li>
+          </ul>
+        </nav>
       </div>
-      <div className="flex-none">
-        <ul className="menu menu-horizontal px-1">
-          <li><a>Inicio</a></li>
-          <li><a>Nosotros</a></li>
-          <li><a>Servicios</a></li>
-          <li><a>FAQ</a></li>
-          <li><button className="btn btn-primary btn-sm rounded-full">Agenda una demo</button></li>
-        </ul>
-      </div>
+
+      {/* Menú móvil */}
+      {openNavigation && (
+        <div className="lg:hidden bg-base-100 p-4 shadow-md z-40">
+          <ul className="menu flex flex-col gap-2">
+            <li><Link to="/" onClick={toggleNavigation}>Inicio</Link></li>
+            <li><a onClick={toggleNavigation}>Nosotros</a></li>
+            <li><Link to="/dashboard" onClick={toggleNavigation}>Servicios</Link></li>
+            <li><a onClick={toggleNavigation}>FAQ</a></li>
+            <li><button className="btn btn-primary btn-sm w-full" onClick={toggleNavigation}>Login</button></li>
+            <li><button className="btn btn-primary btn-sm rounded-full w-full" onClick={toggleNavigation}>Agenda una demo</button></li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
