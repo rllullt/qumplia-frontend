@@ -7,7 +7,7 @@ interface SidebarProps {
 }
 
 function Sidebar({ isOpen, onClose }: SidebarProps) {
-  const sidebarClasses = `drawer-side z-20 ${isOpen ? '' : '-translate-x-full lg:translate-x-0'}`;
+  const sidebarClasses = `drawer-side z-20 shadow-md rounded-r-lg ${isOpen ? '' : '-translate-x-full lg:translate-x-0'}`;
 
   return (
     <div className={sidebarClasses}>
