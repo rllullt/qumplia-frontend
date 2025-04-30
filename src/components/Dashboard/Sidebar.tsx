@@ -7,11 +7,11 @@ interface SidebarProps {
 }
 
 function Sidebar({ isOpen, onClose }: SidebarProps) {
-  const sidebarClasses = `drawer-side z-20 ${isOpen ? '' : '-translate-x-full'}`;
+  const sidebarClasses = `drawer-side z-20 ${isOpen ? '' : '-translate-x-full lg:translate-x-0'}`;
 
   return (
     <div className={sidebarClasses}>
-      <label htmlFor="dashboard-drawer" className="drawer-overlay" onClick={onClose}></label>
+      <label htmlFor="dashboard-drawer" className="drawer-overlay lg:hidden" onClick={onClose}></label>
       <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
         <li className="mb-2">
           <Link to="/dashboard" className="font-bold text-lg">
