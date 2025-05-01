@@ -7,24 +7,39 @@ interface SidebarProps {
 }
 
 function Sidebar({ isOpen, onClose }: SidebarProps) {
-  const sidebarClasses = `drawer-side z-20 shadow-md rounded-r-lg ${isOpen ? '' : '-translate-x-full lg:translate-x-0'}`;
+  // const sidebarClasses = `drawer-side z-20 shadow-md rounded-r-lg ${isOpen ? '' : '-translate-x-full lg:translate-x-0'}`;
+  // const sidebarClasses = `w-64 bg-gray-800 text-white p-4 drawer-side z-20 shadow-md rounded-r-lg ${isOpen ? '' : '-translate-x-full lg:translate-x-0'}`;
+  const sidebarClasses = `
+    fixed top-0 left-0 h-full w-64
+    bg-gray-800 text-white
+    transform transition-transform
+    z-40
+    ${ isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0' }
+  `;
+  
 
   return (
-    <div className={sidebarClasses}>
+    // <aside className="w-64 bg-gray-800 text-white p-4">
+    //     <h2 className="text-xl font-bold mb-4">Dashboard</h2>
+    //     <nav className="space-y-2">
+    //       <Link to="/" className="block hover:underline">Inicio</Link>
+    //     </nav>
+    // </aside>
+    <aside className={sidebarClasses}>
       <label htmlFor="dashboard-drawer" className="drawer-overlay lg:hidden" onClick={onClose}></label>
-      <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+      <ul className="menu p-4 w-full min-h-full bg-base-200 text-base-content">
         <li className="mb-2">
-          <Link to="/dashboard" className="font-bold text-lg">
-            QumpliA Dashboard
+          <Link to="/" className="btn btn-ghost normal-case text-xl">
+            Qumpl<b className="-mx-1">IA</b>
           </Link>
         </li>
-        <li><Link to="/overview">Overview</Link></li>
-        <li><Link to="/users">Users</Link></li>
-        <li><Link to="/reports">Reports</Link></li>
-        <li><Link to="/settings">Settings</Link></li>
-        {/* ... más elementos del menú ... */}
+        <li><Link to="overview">Overview</Link></li>
+        <li><Link to="users">Users</Link></li>
+        <li><Link to="reports">Reports</Link></li>
+        <li><Link to="settings">Settings</Link></li>
+        <li><Link to="campaigns">Campaigns</Link></li>
       </ul>
-    </div>
+    </aside>
   );
 }
 

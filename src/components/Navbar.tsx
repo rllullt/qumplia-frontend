@@ -20,6 +20,8 @@ function Navbar() {
         {!openNavigation && (<FaBars />)}
       </button>
 
+      <Link to="/" className="btn btn-ghost normal-case text-xl">Qumpl<b className="-mx-1">IA</b></Link>
+
       {/* Menú desktop */}
       <nav className="hidden lg:flex">
         <ul className="menu menu-horizontal px-1 items-center">

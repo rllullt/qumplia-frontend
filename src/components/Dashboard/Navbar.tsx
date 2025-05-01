@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaBars, FaXmark } from 'react-icons/fa6';
+import { Link } from 'react-router-dom';
 
 interface DashboardNavbarProps {
   onToggleSidebar: () => void;
@@ -15,9 +16,12 @@ function DashboardNavbar({ onToggleSidebar, isSidebarOpen }: DashboardNavbarProp
           {!isSidebarOpen() && <FaBars />}
         </button>
       </div>
-      <div className="flex-1">
+      {/* <div className="flex-1">
         <a className="btn btn-ghost normal-case text-xl">Dashboard</a>
-      </div>
+      </div> */}
+      <Link to="/dashboard" className="font-bold text-lg">
+        Dashboard
+      </Link>
       <div className="flex-none">
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
