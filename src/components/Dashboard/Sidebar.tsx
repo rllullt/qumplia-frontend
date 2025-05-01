@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Si estás usando React Router
+import { Link, useLocation } from 'react-router-dom'; // Si estás usando React Router
 
 interface SidebarProps {
   isOpen: boolean;
@@ -17,6 +17,17 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
     ${ isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0' }
   `;
   
+  const location = useLocation();
+
+  const isActive = (path: string) => location.pathname === `/dashboard/${path}`;
+
+  const handleLinkClick = (path: string, e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (isActive(path)) {
+      e.preventDefault(); // Do not navigate if the link is already active
+    } else {
+      onClose(); // Close sidebar if navigation is valid
+    }
+  };
 
   return (
     // <aside className="w-64 bg-gray-800 text-white p-4">
@@ -27,17 +38,57 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
     // </aside>
     <aside className={sidebarClasses}>
       <label htmlFor="dashboard-drawer" className="drawer-overlay lg:hidden" onClick={onClose}></label>
-      <ul className="menu p-4 w-full min-h-full bg-base-200 text-base-content">
+      <ul className="menu p-4 w-full min-h-full bg-base-200 text-base-content pt-20 lg:pt-4">
         <li className="mb-2">
           <Link to="/" className="btn btn-ghost normal-case text-xl">
             Qumpl<b className="-mx-1">IA</b>
           </Link>
         </li>
-        <li><Link to="overview">Overview</Link></li>
-        <li><Link to="users">Users</Link></li>
-        <li><Link to="reports">Reports</Link></li>
-        <li><Link to="settings">Settings</Link></li>
-        <li><Link to="campaigns">Campaigns</Link></li>
+        <li>
+          <Link
+            to="/dashboard/overview"
+            onClick={e => handleLinkClick('overview', e)}
+            className={isActive('overview') ? 'font-semibold text-primary' : ''}
+          >
+            Overview
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/dashboard/users"
+            onClick={e => handleLinkClick('users', e)}
+            className={isActive('users') ? 'font-semibold text-primary' : ''}
+          >
+            Users
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/dashboard/reports"
+            onClick={e => handleLinkClick('reports', e)}
+            className={isActive('reports') ? 'font-semibold text-primary' : ''}
+          >
+            Reports
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/dashboard/settings"
+            onClick={e => handleLinkClick('settings', e)}
+            className={isActive('settings') ? 'font-semibold text-primary' : ''}
+          >
+            Settings
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/dashboard/campaigns"
+            onClick={e => handleLinkClick('campaigns', e)}
+            className={isActive('campaigns') ? 'font-semibold text-primary' : ''}
+          >
+            Campaigns
+          </Link>
+        </li>
       </ul>
     </aside>
   );

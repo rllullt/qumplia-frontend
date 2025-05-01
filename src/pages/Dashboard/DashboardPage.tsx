@@ -1,5 +1,4 @@
-import React from 'react';
-import OverviewCards from '../components/Dashboard/OverviewCards';
+import OverviewCards from '../../components/Dashboard/OverviewCards';
 import { FaUsers, FaFileAlt, FaChartBar, FaCog } from 'react-icons/fa'; // Ejemplo de iconos
 
 function DashboardPage() {

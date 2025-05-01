@@ -36,7 +36,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage'; // Asegúrate de crear este componente
 import DashboardLayout from './layouts/DashboardLayout';
-import DashboardPage from './pages/DashboardPage';
+import { DashboardPage, CampaignsPage, CampaignsDetailPage } from './pages/Dashboard/';
 import './App.css';
 
 function App() {
@@ -46,6 +46,9 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard/*" element={<DashboardLayout />}>
           <Route index element={<DashboardPage />} />
+          <Route path="overview" element={<DashboardPage />} />
+          <Route path="campaigns" element={<CampaignsPage />} />
+          <Route path="campaigns/:id" element={<CampaignsDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
