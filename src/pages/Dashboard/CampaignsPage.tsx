@@ -21,7 +21,8 @@ function CampaignsPage() {
     const formData = new FormData();
     formData.append('image', selectedImage);
 
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+    console.log("API URL:", apiUrl);
 
     try {
       const response = await fetch(`${apiUrl}/upload`, {
