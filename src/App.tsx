@@ -35,6 +35,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage'; // Asegúrate de crear este componente
+import DashboardLayout from './layouts/DashboardLayout';
 import DashboardPage from './pages/DashboardPage';
 import './App.css';
 
@@ -43,18 +44,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/dashboard/*" element={<DashboardLayout />} />
+        <Route path="/dashboard/*" element={<DashboardLayout />}>
+          <Route index element={<DashboardPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
-  );
-}
-
-function DashboardLayout() {
-  return (
-    <Routes>
-      <Route path="/" element={<DashboardPage />} />
-      {/* Aquí más rutas dentro del dashboard */}
-    </Routes>
   );
 }
 
