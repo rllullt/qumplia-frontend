@@ -4,10 +4,22 @@ export interface OverviewCardProps {
   title: string;
   value: string | number;
   icon?: React.ReactNode; // Puedes usar iconos de bibliotecas como Heroicons o Font Awesome
-  color?: 'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'error';
+  color?: OverviewCardColorType;
 }
 
-function OverviewCard({ title, value, icon, color = 'primary' }: OverviewCardProps) {
+export const OverviewCardColor = {
+  primary: 'primary',
+  secondary: 'secondary',
+  accent: 'accent',
+  info: 'info',
+  success: 'success',
+  warning: 'warning',
+  error: 'error',
+} as const;
+
+export type OverviewCardColorType = keyof typeof OverviewCardColor;
+
+function OverviewCard({ title, value, icon, color = OverviewCardColor.primary }: OverviewCardProps) {
   const cardClasses = `card card-compact bg-base-100 shadow-md border-l-4 border-${color}`;
 
   return (

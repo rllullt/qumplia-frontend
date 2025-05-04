@@ -1,12 +1,13 @@
 import OverviewCards from '../../components/Dashboard/OverviewCards';
+import { OverviewCardColor } from '../../components/Dashboard/OverviewCard';
 import { FaUsers, FaFileAlt, FaChartBar, FaCog } from 'react-icons/fa'; // Ejemplo de iconos
 
 function DashboardPage() {
   const overviewData = [
-    { title: 'Total Users', value: 1250, icon: <FaUsers />, color: 'primary' },
-    { title: 'Total Reports', value: 580, icon: <FaFileAlt />, color: 'secondary' },
-    { title: 'Monthly Revenue', value: '$12,500', icon: <FaChartBar />, color: 'accent' },
-    { title: 'System Health', value: 'Good', icon: <FaCog />, color: 'success' },
+    { title: 'Total Users', value: 1250, icon: <FaUsers />, color: OverviewCardColor.primary },
+    { title: 'Total Reports', value: 580, icon: <FaFileAlt />, color: OverviewCardColor.secondary },
+    { title: 'Monthly Revenue', value: '$12,500', icon: <FaChartBar />, color: OverviewCardColor.accent },
+    { title: 'System Health', value: 'Good', icon: <FaCog />, color: OverviewCardColor.success },
   ];
 
   return (
