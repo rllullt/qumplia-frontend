@@ -1,4 +1,3 @@
-import React from 'react';
 import OverviewCard, { OverviewCardProps } from './OverviewCard';
 
 interface OverviewCardsProps {

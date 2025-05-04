@@ -1,4 +1,3 @@
-import React from 'react';
 import BaseNavbar from '../components/BaseNavbar';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
