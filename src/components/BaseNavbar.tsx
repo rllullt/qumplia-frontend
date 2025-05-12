@@ -13,7 +13,7 @@ function BaseNavbar({ children }: BaseNavbarProps) {
         </div>
       </div>
       {/* <div className="pt-[1m] lg:pt-[6m] overflow-hidden"></div> */}
-      <div className="pt-20" /> {/* para dar espacio debajo del navbar */}
+      <div className="" /> {/* space under navbar */}
     </>
   );
 }
