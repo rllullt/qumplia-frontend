@@ -2,15 +2,21 @@ import React, { useState } from 'react';
 
 function CampaignsPage() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [apiKey, setApiKey] = useState<string>('');
   const [preview, setPreview] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   type UploadResponse = {
     message: string;
-    metadata: {
-      filename: string;
-      content_type: string;
-      size_bytes: number;
+    result: {
+      response: string;
+      image_metadata: {
+        filename: string;
+        content_type: string;
+        size_bytes: number;
+      };
+      reason: string;
+      status: string;
     };
   };
 
@@ -24,6 +30,12 @@ function CampaignsPage() {
     }
   };
 
+  const handleApiKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const apiKey = e.target.value;
+    setApiKey(apiKey);
+    console.log("API Key:", apiKey);
+  };
+
   const handleSubmit = async () => {
     if (!selectedImage) return;
 
@@ -31,16 +43,18 @@ function CampaignsPage() {
 
     const formData = new FormData();
     formData.append('image', selectedImage);
+    formData.append('api_key', apiKey); // Aquí deberías agregar el valor del API Key
 
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
     console.log("API URL:", apiUrl);
 
     try {
+      console.log("FormData:", formData);
       const response = await fetch(`${apiUrl}/campaigns/new/`, {
         method: 'POST',
         body: formData,
         headers: {
-          'Accept': 'application/json'  // key: this tells "I wait JSON, no HTML"
+          'Accept': 'application/json'  // key: this tells the API "I wait JSON, no HTML"
         }
       });
 
@@ -64,7 +78,15 @@ function CampaignsPage() {
   return (
     <div className="max-w-xl mx-auto">
       <div className="card bg-base-100 shadow-md p-6">
-        <h2 className="text-2xl font-bold mb-4">Upload campaign image</h2>
+        <h2 className="text-2xl font-bold mb-4">Nueva campaña</h2>
+
+        <input
+          type="text"
+          id="api-key"
+          placeholder="API Key"
+          className="input input-bordered w-full mb-4"
+          onChange={handleApiKeyChange}
+        />
 
         <input
           type="file"
@@ -89,12 +111,17 @@ function CampaignsPage() {
 
         {status === 'success' && (
           <div className="mt-4 alert alert-success shadow-sm">
-            Image processed successfully!
+            {responseData?.message}
+            <br />Status: {responseData?.result.status}
+            <br />Reason: {responseData?.result.reason}
             <br />Image data:
-            <br />FileName: {responseData?.metadata.filename}
-            <br />Content Type: {responseData?.metadata.content_type}
-            <br />Size: {responseData?.metadata.size_bytes} bytes
-            <br />This campaign image DOES cumply with all the requirements.
+            <br />
+            <ul>
+              <li>Filename: {responseData?.result.image_metadata.filename}</li>
+              <li>Content Type: {responseData?.result.image_metadata.content_type}</li>
+              <li>Size: {responseData?.result.image_metadata.size_bytes} bytes</li>
+            </ul>
+            <br />{responseData?.result.response}
           </div>
         )}
         {status === 'error' && (
