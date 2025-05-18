@@ -14,9 +14,9 @@ function LandingPage() {
     <div>
       <div className='pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden'>
         <BaseNavbar>
-            <Navbar />
-          </BaseNavbar>
-        </div>
+          <Navbar />
+        </BaseNavbar>
+      </div>
       <Hero
         title="Compliance sin complicaciones"
         subtitle="Facilitamos el proceso de compliance en la industria financiera a través de IA y Blockchain."
