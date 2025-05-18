@@ -26,11 +26,11 @@ function Navbar() {
       <nav className="hidden lg:flex">
         <ul className="menu menu-horizontal px-1 items-center">
           <li><Link to="/">Inicio</Link></li>
-          <li><a>Nosotros</a></li>
-          <li><Link to="/dashboard">Servicios</Link></li>
-          <li><a>FAQ</a></li>
+          {/* <li><a>Nosotros</a></li> */}
+          <li><Link to="/dashboard">Dashboard</Link></li>
+          {/* <li><a>FAQ</a></li> */}
           <li><button className="btn btn-primary btn-sm">Login</button></li>
-          <li><button className="btn btn-primary btn-sm rounded-full mx-2">Agenda una demo</button></li>
+          {/* <li><button className="btn btn-primary btn-sm rounded-full mx-2">Agenda una demo</button></li> */}
         </ul>
       </nav>
 
@@ -39,11 +39,11 @@ function Navbar() {
         <div className="lg:hidden bg-base-100 p-4 shadow-md z-40">
           <ul className="menu flex flex-col gap-2">
             <li><Link to="/" onClick={toggleNavigation}>Inicio</Link></li>
-            <li><a onClick={toggleNavigation}>Nosotros</a></li>
-            <li><Link to="/dashboard" onClick={toggleNavigation}>Servicios</Link></li>
-            <li><a onClick={toggleNavigation}>FAQ</a></li>
+            {/* <li><a onClick={toggleNavigation}>Nosotros</a></li> */}
+            <li><Link to="/dashboard" onClick={toggleNavigation}>Dashboard</Link></li>
+            {/* <li><a onClick={toggleNavigation}>FAQ</a></li> */}
             <li><button className="btn btn-primary btn-sm w-full" onClick={toggleNavigation}>Login</button></li>
-            <li><button className="btn btn-primary btn-sm rounded-full w-full" onClick={toggleNavigation}>Agenda una demo</button></li>
+            {/* <li><button className="btn btn-primary btn-sm rounded-full w-full" onClick={toggleNavigation}>Agenda una demo</button></li> */}
           </ul>
         </div>
       )}
