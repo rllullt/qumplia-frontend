@@ -24,6 +24,7 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();  // hook for navigating between pages
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.name, e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });  // spread operator: ‘...’, generates a list from an object
   };
 
@@ -63,6 +64,7 @@ const LoginPage: React.FC = () => {
       localStorage.setItem('access_token', data.access);
       localStorage.setItem('refresh_token', data.refresh);
       console.log('Login successful:', data);
+      console.log('Local storage:', localStorage);
       navigate('/');
     } catch (error) {
       console.error(error);
@@ -86,10 +88,11 @@ const LoginPage: React.FC = () => {
           <input
             type="text"
             id="username"
-            value={username}
+            name="username"
+            value={formData.username}
             placeholder="Username"
             className="input input-bordered"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -97,10 +100,11 @@ const LoginPage: React.FC = () => {
           <input
             type="password"
             id="password"
-            value={password}
+            name="password"
+            value={formData.password}
             placeholder="Password"
             className="input input-bordered"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleChange}
           />
         </div>
         <button onClick={handleSubmit}>Login</button>
