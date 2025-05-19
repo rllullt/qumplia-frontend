@@ -1,12 +1,17 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaBars, FaXmark } from 'react-icons/fa6';
 
 function Navbar() {
   const [openNavigation, setOpenNavigation] = useState(false);
+  const navigate = useNavigate();
 
   const toggleNavigation = () => {
     setOpenNavigation(!openNavigation);
+  };
+
+  const handleLoginButtonClick = () => {
+    navigate('/login');
   };
 
   return (
@@ -29,7 +34,14 @@ function Navbar() {
           {/* <li><a>Nosotros</a></li> */}
           <li><Link to="/dashboard">Dashboard</Link></li>
           {/* <li><a>FAQ</a></li> */}
-          <li><button className="btn btn-primary btn-sm">Login</button></li>
+          <li>
+            <button
+              className="btn btn-primary btn-sm"
+              onClick={handleLoginButtonClick}
+              >
+              Login
+            </button>
+          </li>
           {/* <li><button className="btn btn-primary btn-sm rounded-full mx-2">Agenda una demo</button></li> */}
         </ul>
       </nav>
@@ -42,7 +54,14 @@ function Navbar() {
             {/* <li><a onClick={toggleNavigation}>Nosotros</a></li> */}
             <li><Link to="/dashboard" onClick={toggleNavigation}>Dashboard</Link></li>
             {/* <li><a onClick={toggleNavigation}>FAQ</a></li> */}
-            <li><button className="btn btn-primary btn-sm w-full" onClick={toggleNavigation}>Login</button></li>
+            <li>
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={handleLoginButtonClick}
+                >
+                Login
+              </button>
+            </li>
             {/* <li><button className="btn btn-primary btn-sm rounded-full w-full" onClick={toggleNavigation}>Agenda una demo</button></li> */}
           </ul>
         </div>

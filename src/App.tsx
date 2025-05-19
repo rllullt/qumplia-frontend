@@ -33,7 +33,8 @@
 // }
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/LandingPage'; // Asegúrate de crear este componente
+import LoginPage from './pages/Login/LoginPage';
+import LandingPage from './pages/LandingPage';
 import DashboardLayout from './layouts/DashboardLayout';
 import { DashboardPage, CampaignsPage, CampaignsDetailPage } from './pages/Dashboard/';
 import './App.css';
@@ -43,6 +44,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard/*" element={<DashboardLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="overview" element={<DashboardPage />} />

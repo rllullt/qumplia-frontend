@@ -44,6 +44,7 @@ function CampaignsPage() {
     const formData = new FormData();
     formData.append('image', selectedImage);
     formData.append('api_key', apiKey); // Aquí deberías agregar el valor del API Key
+    const accessToken = localStorage.getItem('access_token');
 
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
     console.log("API URL:", apiUrl);
@@ -54,7 +55,8 @@ function CampaignsPage() {
         method: 'POST',
         body: formData,
         headers: {
-          'Accept': 'application/json'  // key: this tells the API "I wait JSON, no HTML"
+          'Accept': 'application/json',  // key: this tells the API "I wait JSON, no HTML"
+          'Authorization': `Bearer ${accessToken}`, // Add the access token to the headers
         }
       });
 
