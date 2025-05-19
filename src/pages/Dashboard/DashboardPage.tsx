@@ -5,8 +5,8 @@ import { FaUsers, FaFileAlt, FaChartBar, FaCog } from 'react-icons/fa'; // Ejemp
 function DashboardPage() {
   const overviewData = [
     { title: 'Total Users', value: 1250, icon: <FaUsers />, color: OverviewCardColor.primary },
-    { title: 'Total Reports', value: 580, icon: <FaFileAlt />, color: OverviewCardColor.secondary },
-    { title: 'Monthly Revenue', value: '$12,500', icon: <FaChartBar />, color: OverviewCardColor.accent },
+    { title: 'Total Campaigns', value: 580, icon: <FaFileAlt />, color: OverviewCardColor.secondary },
+    { title: 'Auditory reduced costs', value: '$12,500', icon: <FaChartBar />, color: OverviewCardColor.accent },
     { title: 'System Health', value: 'Good', icon: <FaCog />, color: OverviewCardColor.success },
   ];
 
