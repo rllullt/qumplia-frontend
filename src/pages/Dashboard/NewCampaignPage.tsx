@@ -145,18 +145,16 @@ function CampaignsPage() {
         </button>
 
         {status === 'success' && (
-          <div className="mt-4 alert alert-success shadow-sm">
+          <div className="mt-4 shadow-sm">
             {responseData?.message}
-            <br />Status: {responseData?.result.status}
-            <br />Reason: {responseData?.result.reason}
-            <br />Image data:
-            <br />
-            <ul>
+            <p className='alert'>Status: {responseData?.result.status}</p>
+            <p>Image data:</p>
+            <ul className='alert'>
               <li>Filename: {responseData?.result.image_metadata.filename}</li>
               <li>Content Type: {responseData?.result.image_metadata.content_type}</li>
               <li>Size: {responseData?.result.image_metadata.size_bytes} bytes</li>
             </ul>
-            <br />{responseData?.result.response}
+            <p>Reason: {responseData?.result.reason}</p>
           </div>
         )}
         {status === 'error' && (
