@@ -18,8 +18,6 @@ const LoginPage: React.FC = () => {
     username: "",
     password: "",
   });
-  const [username, setUsername] = React.useState<string>("");
-  const [password, setPassword] = React.useState<string>("");
   const [error, setError] = React.useState<string | null>(null);
   const navigate = useNavigate();  // hook for navigating between pages
   
@@ -33,10 +31,6 @@ const LoginPage: React.FC = () => {
     // e.preventDefault();
     setError(null); // Cleans any previous error message
 
-    setFormData({
-      username: username,
-      password: password,
-    });
     console.log('Form data:', formData);
 
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
