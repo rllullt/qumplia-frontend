@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
 
+interface FormData {
+  name: string;
+  description: string;
+  apiKey: string;
+}
+
 function CampaignsPage() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [apiKey, setApiKey] = useState<string>('');
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    description: '',
+    apiKey: ''
+  });
   const [preview, setPreview] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
@@ -30,10 +40,9 @@ function CampaignsPage() {
     }
   };
 
-  const handleApiKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const apiKey = e.target.value;
-    setApiKey(apiKey);
-    console.log("API Key:", apiKey);
+  const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.name, e.target.value);
+    setFormData({ ...formData, [e.target.name]: e.target.value });  // spread operator: ‘...’, generates a list from an object
   };
 
   const handleSubmit = async () => {
@@ -41,19 +50,24 @@ function CampaignsPage() {
 
     setStatus('loading');
 
-    const formData = new FormData();
-    formData.append('image', selectedImage);
-    formData.append('api_key', apiKey); // Aquí deberías agregar el valor del API Key
+    const sendingData = new FormData();
+    sendingData.append('image', selectedImage);
+    sendingData.append('name', formData.name);
+    sendingData.append('description', formData.description);
+    sendingData.append('apiKey', formData.apiKey);
+    console.log('Sending data:', sendingData);
+    
     const accessToken = localStorage.getItem('access_token');
 
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
     console.log("API URL:", apiUrl);
 
     try {
-      console.log("FormData:", formData);
-      const response = await fetch(`${apiUrl}/campaigns/new/`, {
+      console.log("Sending Data:", sendingData);
+      console.log("accessToken:", accessToken);
+      const response = await fetch(`${apiUrl}/campaigns/`, {
         method: 'POST',
-        body: formData,
+        body: sendingData,
         headers: {
           'Accept': 'application/json',  // key: this tells the API "I wait JSON, no HTML"
           'Authorization': `Bearer ${accessToken}`, // Add the access token to the headers
@@ -84,10 +98,29 @@ function CampaignsPage() {
 
         <input
           type="text"
-          id="api-key"
-          placeholder="API Key"
+          id="name"
+          name="name"
+          placeholder="Nombre de la campaña"
           className="input input-bordered w-full mb-4"
-          onChange={handleApiKeyChange}
+          onChange={handleTextFieldChange}
+        />
+
+        <input
+          type="text"
+          id="description"
+          name="description"
+          placeholder="Descripción"
+          className="input input-bordered w-full mb-4"
+          onChange={handleTextFieldChange}
+        />
+
+        <input
+          type="text"
+          id="apiKey"
+          name="apiKey"
+          placeholder="API Key (Gemini)"
+          className="input input-bordered w-full mb-4"
+          onChange={handleTextFieldChange}
         />
 
         <input
