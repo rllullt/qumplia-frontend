@@ -38,6 +38,10 @@ import LandingPage from './pages/LandingPage';
 import DashboardLayout from './layouts/DashboardLayout';
 import { DashboardPage, CampaignsPage, CampaignsDetailPage } from './pages/Dashboard/';
 import './App.css';
+import ProtectedRoute from './components/ProtectedRoute';
+
+const isAuthenticated = localStorage.getItem('access_token') !== null;
+console.log('isAuthenticated:', isAuthenticated);
 
 function App() {
   return (
@@ -45,7 +49,14 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/dashboard/*" element={<DashboardLayout />}>
+        <Route
+          path="/dashboard/*"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated} redirectTo="/login">
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<DashboardPage />} />
           <Route path="overview" element={<DashboardPage />} />
           <Route path="campaigns" element={<CampaignsPage />} />
@@ -55,5 +66,7 @@ function App() {
     </BrowserRouter>
   );
 }
+
+
 
 export default App;
