@@ -55,6 +55,24 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
         </li>
         <li>
           <Link
+            to="/dashboard/campaigns"
+            onClick={e => handleLinkClick('campaigns', e)}
+            className={isActive('campaigns') ? 'font-semibold text-primary' : ''}
+          >
+            Campañas
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/dashboard/new-campaign"
+            onClick={e => handleLinkClick('new-campaign', e)}
+            className={isActive('new-campaign') ? 'font-semibold text-primary' : ''}
+          >
+            Nueva campaña
+          </Link>
+        </li>
+        {/* <li>
+          <Link
             to="/dashboard/users"
             onClick={e => handleLinkClick('users', e)}
             className={isActive('users') ? 'font-semibold text-primary' : ''}
@@ -79,16 +97,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
           >
             Settings
           </Link>
-        </li>
-        <li>
-          <Link
-            to="/dashboard/campaigns"
-            onClick={e => handleLinkClick('campaigns', e)}
-            className={isActive('campaigns') ? 'font-semibold text-primary' : ''}
-          >
-            Campaigns
-          </Link>
-        </li>
+        </li> */}
       </ul>
     </aside>
   );

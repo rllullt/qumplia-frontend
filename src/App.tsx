@@ -36,7 +36,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/Login/LoginPage';
 import LandingPage from './pages/LandingPage';
 import DashboardLayout from './layouts/DashboardLayout';
-import { DashboardPage, CampaignsPage, CampaignsDetailPage } from './pages/Dashboard/';
+import { DashboardPage, CampaignsPage,  NewCampaignPage, CampaignsDetailPage } from './pages/Dashboard/';
 import './App.css';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -60,6 +60,7 @@ function App() {
           <Route index element={<DashboardPage />} />
           <Route path="overview" element={<DashboardPage />} />
           <Route path="campaigns" element={<CampaignsPage />} />
+          <Route path="new-campaign" element={<NewCampaignPage />} />
           <Route path="campaigns/:id" element={<CampaignsDetailPage />} />
         </Route>
       </Routes>
