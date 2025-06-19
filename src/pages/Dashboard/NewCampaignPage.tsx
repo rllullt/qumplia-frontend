@@ -131,8 +131,20 @@ function CampaignsPage() {
         />
 
         {preview && (
-          <div className="mb-4">
-            <img src={preview} alt="Preview" className="w-full h-auto rounded" />
+          <div className="mb-6 flex justify-center items-center">
+            <img
+              src={preview}
+              alt="Preview"
+              className="
+                max-w-full  /* Impide que exceda el ancho del contenedor */
+                h-auto  /* Mantiene la proporción de aspecto */
+                max-h-96  /* Altura máxima de 384px en tamaño menor a md (md=768px) */
+                md:max-h-150
+                object-contain  /* Escala la imagen para que quepa, puede añadir espacio vacío */
+                rounded-lg  /* Bordes redondeados */
+                shadow-md  /* Sombra */
+              "
+            />
           </div>
         )}
 

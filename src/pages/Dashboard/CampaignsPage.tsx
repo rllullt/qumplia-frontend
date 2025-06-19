@@ -35,7 +35,7 @@ function CampaignsPage() {
     };
 
     fetchCampaigns();
-  }, [apiUrl, accessToken]);
+  }, [apiUrl, accessToken]);  // useEffect executed every time apiUrl or accessToken change
 
   if (loading) {
     return <div className="p-6">Loading...</div>;
