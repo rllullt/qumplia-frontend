@@ -10,10 +10,12 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+
   const handleLogin = async () => {
     setError(null);
     try {
-      const response = await fetch('/api/token/', {
+      const response = await fetch(`${apiUrl}/token/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
