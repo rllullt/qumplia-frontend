@@ -25,19 +25,19 @@ export function EzSwitchVara() {
   const changeStatusTx = usePrepareProgramTransaction({
     program,
     serviceName: 'service',
-    functionName: 'ChangeStatus',
+    functionName: 'changeStatus',
   });
 
   const submitEvalTx = usePrepareProgramTransaction({
     program,
     serviceName: 'service',
-    functionName: 'SubmitEvaluation',
+    functionName: 'submitEvaluation',
   });
 
   const updateMetaTx = usePrepareProgramTransaction({
     program,
     serviceName: 'service',
-    functionName: 'UpdateMetadata',
+    functionName: 'updateMetadata',
   });
 
   const { prepareEzTransactionParams } = usePrepareEzTransactionParams();
