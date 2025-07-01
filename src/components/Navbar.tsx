@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaBars, FaXmark } from 'react-icons/fa6';
+import { Wallet } from '@gear-js/wallet-connect';
+import '@gear-js/vara-ui/dist/style.css'; // Importa los estilos de Vara UI para un tema consistente
 
 function Navbar() {
   const [openNavigation, setOpenNavigation] = useState(false);
@@ -26,6 +28,11 @@ function Navbar() {
       </button>
 
       <Link to="/" className="btn btn-ghost normal-case text-xl">Qumpl<b className="-mx-1">IA</b></Link>
+
+      <Wallet
+        theme="vara" // Puedes usar "vara" o "gear"
+        displayBalance={true}
+      />
 
       {/* Menú desktop */}
       <nav className="hidden lg:flex">
