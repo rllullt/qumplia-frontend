@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaBars, FaXmark } from 'react-icons/fa6';
 import { Wallet } from '@gear-js/wallet-connect';
 import '@gear-js/vara-ui/dist/style.css'; // Importa los estilos de Vara UI para un tema consistente
+import { EzSwitchVara } from '@/pages/Home/EzSwitchVara';
 
 function Navbar() {
   const [openNavigation, setOpenNavigation] = useState(false);
@@ -51,6 +52,7 @@ function Navbar() {
           </li>
           {/* <li><button className="btn btn-primary btn-sm rounded-full mx-2">Agenda una demo</button></li> */}
         </ul>
+        <EzSwitchVara />
       </nav>
 
       {/* Menú móvil */}
