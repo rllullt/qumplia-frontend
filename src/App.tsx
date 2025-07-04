@@ -37,6 +37,7 @@ import LoginPage from './pages/Login/LoginPage';
 import LandingPage from './pages/LandingPage';
 import DashboardLayout from './layouts/DashboardLayout';
 import { DashboardPage, CampaignsPage,  NewCampaignPage, CampaignsDetailPage } from './pages/Dashboard/';
+import { VaraBlockWallet } from './pages/Home';
 import './App.css';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -49,6 +50,9 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/vara-block-wallet" element={<VaraBlockWallet />} />
+        
+        {/* Protected Routes for Dashboard */}
         <Route
           path="/dashboard/*"
           element={
