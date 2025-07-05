@@ -1,8 +1,8 @@
-import BaseNavbar from '../components/BaseNavbar';
-import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
-import HeroShield from '../assets/hero-img-shield.png';
-import HeroBargraph from '../assets/hero-img-bargraph.png';
+import BaseNavbar from '@/components/BaseNavbar';
+import Navbar from '@/components/Navbar';
+import Hero from '@/components/Hero';
+import HeroShield from '@/assets/hero-img-shield.png';
+import HeroBargraph from '@/assets/hero-img-bargraph.png';
 
 function LandingPage() {
 
