@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { CampaignCardProps } from '../../components/Dashboard/CampaignCard';
-import CampaignCards from '../../components/Dashboard/CampaignCards';
+import { CampaignCardProps } from '@/components/Dashboard/CampaignCard';
+import CampaignCards from '@/components/Dashboard/CampaignCards';
 
 function CampaignsPage() {
   const [campaignsData, setCampaignsData] = useState<CampaignCardProps[]>([]);

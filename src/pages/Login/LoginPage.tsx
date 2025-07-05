@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import BaseNavbar from "../../components/layout/BaseNavbar";
-import Navbar from "../../components/layout/Navbar";
+import BaseNavbar from "@/components/layout/BaseNavbar";
+import Navbar from "@/components/layout/Navbar";
 
 interface FormData {
   username: string;

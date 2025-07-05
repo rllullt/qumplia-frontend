@@ -1,8 +1,8 @@
-import BaseNavbar from '../components/layout/BaseNavbar';
-import Navbar from '../components/layout/Navbar';
-import Hero from '../components/Hero';
-import HeroShield from '../assets/hero-img-shield.png';
-import HeroBargraph from '../assets/hero-img-bargraph.png';
+import BaseNavbar from '@/components/layout/BaseNavbar';
+import Navbar from '@/components/layout/Navbar';
+import Hero from '@/components/Hero';
+import HeroShield from '@/assets/hero-img-shield.png';
+import HeroBargraph from '@/assets/hero-img-bargraph.png';
 import EzSwitchVara from "./Home/EzSwitchVara";
 
 function LandingPage() {

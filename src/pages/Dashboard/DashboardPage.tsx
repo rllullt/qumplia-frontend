@@ -1,5 +1,5 @@
-import OverviewCards from '../../components/Dashboard/OverviewCards';
-import { OverviewCardColor } from '../../components/Dashboard/OverviewCard';
+import OverviewCards from '@/components/Dashboard/OverviewCards';
+import { OverviewCardColor } from '@/components/Dashboard/OverviewCard';
 import { FaUsers, FaFileAlt, FaChartBar, FaCog } from 'react-icons/fa'; // Ejemplo de iconos
 
 function DashboardPage() {
