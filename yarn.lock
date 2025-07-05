@@ -4352,7 +4352,7 @@ __metadata:
     "@polkadot/api": "npm:15.4.1"
     "@polkadot/extension-dapp": "npm:^0.58.8"
     "@polkadot/react-identicon": "npm:3.12.1"
-    "@polkadot/types": "npm:15.4.1"
+    "@polkadot/types": "npm:^16.3.1"
     "@tailwindcss/vite": "npm:^4.1.4"
     "@tanstack/react-query": "npm:5.66.0"
     "@types/node": "npm:^22.15.3"
