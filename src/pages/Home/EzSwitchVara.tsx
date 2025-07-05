@@ -12,7 +12,7 @@ import { Program } from '@/hocs/lib';
 
 const ALLOWED_SIGNLESS_ACTIONS = ['ChangeStatus', 'SubmitEvaluation', 'UpdateMetadata'];
 
-export function EzSwitchVara() {
+function EzSwitchVara() {
   const { account } = useAccount();
   const signless = useSignlessTransactions();
   const gasless = useGaslessTransactions();
@@ -192,3 +192,5 @@ export function EzSwitchVara() {
     </div>
   );
 }
+
+export default EzSwitchVara;
