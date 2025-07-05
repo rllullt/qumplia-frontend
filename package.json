@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
-    "@polkadot/types": "15.4.1",
+    "@polkadot/types": "^16.3.1",
     "@tailwindcss/vite": "^4.1.4",
     "@types/node": "^22.15.3",
     "@types/react": "^19.0.10",
