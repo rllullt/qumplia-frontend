@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import BaseNavbar from '../components/BaseNavbar';
+import BaseNavbar from '../components/layout/BaseNavbar';
 import DashboardNavbar from '../components/Dashboard/Navbar';
 import { useEffect, useState } from 'react';
 import Sidebar from '../components/Dashboard/Sidebar';

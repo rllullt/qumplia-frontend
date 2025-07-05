@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaBars, FaXmark } from 'react-icons/fa6';
+import { Wallet } from '@gear-js/wallet-connect';
 
 function Navbar() {
   const [openNavigation, setOpenNavigation] = useState(false);
@@ -43,6 +44,7 @@ function Navbar() {
             </button>
           </li>
           {/* <li><button className="btn btn-primary btn-sm rounded-full mx-2">Agenda una demo</button></li> */}
+          <Wallet />
         </ul>
       </nav>
 

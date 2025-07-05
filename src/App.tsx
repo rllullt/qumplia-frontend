@@ -32,42 +32,50 @@
 //   )
 // }
 
+import { useApi, useAccount } from '@gear-js/react-hooks';
+import { withProviders } from '@/hocs';
+import { Routing } from '@/pages'; // Importa el componente Routing
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/Login/LoginPage';
-import LandingPage from './pages/LandingPage';
-import DashboardLayout from './layouts/DashboardLayout';
-import { DashboardPage, CampaignsPage,  NewCampaignPage, CampaignsDetailPage } from './pages/Dashboard/';
+import { ApiLoader } from '@/components/loaders';
 import './App.css';
-import ProtectedRoute from './components/ProtectedRoute';
+import "@gear-js/vara-ui/dist/style.css";
 
 const isAuthenticated = localStorage.getItem('access_token') !== null;
 console.log('isAuthenticated:', isAuthenticated);
 
-function App() {
+function Component() {
+  const { isApiReady } = useApi();
+  const { isAccountReady } = useAccount();
+
+  const isAppReady = isApiReady && isAccountReady;
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route
-          path="/dashboard/*"
-          element={
-            <ProtectedRoute isAuthenticated={isAuthenticated} redirectTo="/login">
-              <DashboardLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<DashboardPage />} />
-          <Route path="overview" element={<DashboardPage />} />
-          <Route path="campaigns" element={<CampaignsPage />} />
-          <Route path="new-campaign" element={<NewCampaignPage />} />
-          <Route path="campaigns/:id" element={<CampaignsDetailPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    // <BrowserRouter>
+    //   <Routes>
+    //     <Route path="/" element={<LandingPage />} />
+    //     <Route path="/login" element={<LoginPage />} />
+    //     <Route
+    //       path="/dashboard/*"
+    //       element={
+    //         <ProtectedRoute isAuthenticated={isAuthenticated} redirectTo="/login">
+    //           <DashboardLayout />
+    //         </ProtectedRoute>
+    //       }
+    //     >
+    //       <Route index element={<DashboardPage />} />
+    //       <Route path="overview" element={<DashboardPage />} />
+    //       <Route path="campaigns" element={<CampaignsPage />} />
+    //       <Route path="new-campaign" element={<NewCampaignPage />} />
+    //       <Route path="campaigns/:id" element={<CampaignsDetailPage />} />
+    //     </Route>
+    //   </Routes>
+    // </BrowserRouter>
+    // <BrowserRouter>
+      <main>
+        {isAppReady ? <Routing isAuthenticated={isAuthenticated} /> : <ApiLoader />}
+      </main>
+    // </BrowserRouter>  // ya está en withProviders
   );
 }
 
-
-
-export default App;
+export const App = withProviders(Component);
