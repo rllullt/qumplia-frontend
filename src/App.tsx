@@ -35,7 +35,6 @@
 import { useApi, useAccount } from '@gear-js/react-hooks';
 import { withProviders } from '@/hocs';
 import { Routing } from '@/pages'; // Importa el componente Routing
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ApiLoader } from '@/components/loaders';
 import './App.css';
 import "@gear-js/vara-ui/dist/style.css";
