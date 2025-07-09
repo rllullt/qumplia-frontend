@@ -14,7 +14,7 @@ import { Alert, alertStyles } from '@gear-js/vara-ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ComponentType } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { Program } from './lib';
+import { Program } from '@/hocs/lib';
 
 import { ADDRESS } from '@/consts';
 

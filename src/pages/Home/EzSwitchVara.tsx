@@ -88,7 +88,7 @@ function EzSwitchVara() {
       const { sessionForAccount, ...params } = await prepareEzTransactionParams(false);
       if (!sessionForAccount) throw new Error('No session');
       const { transaction } = await changeStatusTx.prepareTransactionAsync({
-        args: [1n, { Approved: null }, sessionForAccount],
+        args: [1, "Approved",null],
         value: 0n,
         ...params,
       });
@@ -108,7 +108,7 @@ function EzSwitchVara() {
       const { sessionForAccount, ...params } = await prepareEzTransactionParams(false);
       if (!sessionForAccount) throw new Error('No session');
       const { transaction } = await submitEvalTx.prepareTransactionAsync({
-        args: [1n, 'userhash', { Approved: null }, 'metadata', sessionForAccount],
+        args: [1, 'userhash', "Approved", 'metadata', null],
         value: 0n,
         ...params,
       });
@@ -128,7 +128,7 @@ function EzSwitchVara() {
       const { sessionForAccount, ...params } = await prepareEzTransactionParams(false);
       if (!sessionForAccount) throw new Error('No session');
       const { transaction } = await updateMetaTx.prepareTransactionAsync({
-        args: [1n, 'new-metadata', sessionForAccount],
+        args: [1, 'new-metadata', null],
         value: 0n,
         ...params,
       });
