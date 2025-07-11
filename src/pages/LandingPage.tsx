@@ -4,7 +4,6 @@ import Hero from '@/components/Hero';
 import HeroShield from '@/assets/hero-img-shield.png';
 import HeroBargraph from '@/assets/hero-img-bargraph.png';
 import EzSwitchVara from "@/pages/Home/EzSwitchVara";
-import { EzSwitchAndSendHello } from '@/pages/Home/EzSwitchAndSendHello';
 
 function LandingPage() {
 
@@ -27,7 +26,6 @@ function LandingPage() {
         largeImageUrl={HeroShield}
       />
       <EzSwitchVara />
-      <EzSwitchAndSendHello/>
       <Hero
         title="Optimiza el cumplimiento normativo en la industria financiera"
         subtitle="Los errores de compliance en promociones financieras ponen en riesgo tu negocio. QumplIA ofrece una plataforma unificada potenciada por IA y Blockchain para asegurar el cumplimiento regulatorio, facilitando la identificación y corrección de problemas en cada etapa del ciclo de vida de la campaña."
