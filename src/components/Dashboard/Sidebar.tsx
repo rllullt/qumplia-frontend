@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom'; // Si estás usando React Router
+import EzSwitchVara from '@/pages/Home/EzSwitchVara';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -70,6 +71,9 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
           >
             Nueva campaña
           </Link>
+        </li>
+        <li>
+          <EzSwitchVara />
         </li>
         {/* <li>
           <Link
