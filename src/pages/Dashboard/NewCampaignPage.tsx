@@ -1,5 +1,13 @@
-import React, { useState } from 'react';
-import { Status } from '@/hocs/lib';
+import React, { useState, useEffect, useRef } from 'react';
+import { useAccount, useProgram, usePrepareProgramTransaction } from '@gear-js/react-hooks';
+import {
+  useSignlessTransactions,
+  useGaslessTransactions,
+  usePrepareEzTransactionParams,
+  EzTransactionsSwitch,
+} from 'gear-ez-transactions';
+import { useSignAndSend } from '@/hooks/use-sign-and-send';
+import { Program, Status } from '@/hocs/lib';
 
 interface FormData {
   name: string;
@@ -7,6 +15,7 @@ interface FormData {
   apiKey: string;
 }
 
+const ALLOWED_SIGNLESS_ACTIONS = ['ChangeStatus', 'SubmitEvaluation', 'UpdateMetadata'];
 export const ALLOWED_STATUS: Record<string, Status> = {
   'Aprobado': 'Approved',
   'Pendiente': 'Pending',
@@ -92,6 +101,10 @@ function CampaignsPage() {
         response.json().then(data => {
           console.log('Response data:', data);
           setResponseData(data);
+          if (data['result']['status'].toLowerCase() !== "error") {
+            let campaign = data['campaign'];
+            handleSubmitEvaluation(campaign['id'], '1', ALLOWED_STATUS[campaign['status']], '');
+          }
         }).catch(error => {
           console.error('Error parsing JSON:', error);
         });
@@ -101,6 +114,142 @@ function CampaignsPage() {
     } catch (error) {
       console.error(error);
       setStatus('error');
+    }
+  };
+
+  const { account } = useAccount();
+  const signless = useSignlessTransactions();
+  const gasless = useGaslessTransactions();
+
+  const { data: program } = useProgram({
+    library: Program,
+    id: import.meta.env.VITE_PROGRAMID,
+  });
+
+  const changeStatusTx = usePrepareProgramTransaction({
+    program,
+    serviceName: 'service',
+    functionName: 'changeStatus',
+  });
+
+  const submitEvalTx = usePrepareProgramTransaction({
+    program,
+    serviceName: 'service',
+    functionName: 'submitEvaluation',
+  });
+
+  const updateMetaTx = usePrepareProgramTransaction({
+    program,
+    serviceName: 'service',
+    functionName: 'updateMetadata',
+  });
+
+  const { prepareEzTransactionParams } = usePrepareEzTransactionParams();
+  const { signAndSend } = useSignAndSend();
+
+  const [loading, setLoading] = useState('');
+  const [voucherPending, setVoucherPending] = useState(false);
+  const hasRequestedOnceRef = useRef(false);
+
+  useEffect(() => {
+    hasRequestedOnceRef.current = false;
+  }, [account?.address]);
+
+  useEffect(() => {
+    if (!account?.address || !gasless.isEnabled || hasRequestedOnceRef.current) return;
+
+    hasRequestedOnceRef.current = true;
+    setVoucherPending(true);
+
+    const requestVoucher = async () => {
+      try {
+        if (gasless.voucherStatus?.enabled) {
+          setVoucherPending(false);
+          return;
+        }
+        await gasless.requestVoucher(account.address);
+        let retries = 5;
+        while (retries-- > 0) {
+          await new Promise((res) => setTimeout(res, 300));
+          if (gasless.voucherStatus?.enabled) {
+            setVoucherPending(false);
+            return;
+          }
+        }
+        setVoucherPending(false);
+      } catch {
+        hasRequestedOnceRef.current = false;
+        setVoucherPending(false);
+      }
+    };
+    void requestVoucher();
+  }, [account?.address, gasless.isEnabled]);
+
+  const handleChangeStatus = async (campaignId: number, newStatus: Status) => {
+    if (!signless.isActive) return;
+    setLoading('change');
+    try {
+      const { sessionForAccount, ...params } = await prepareEzTransactionParams(false);
+      if (!sessionForAccount) throw new Error('No session');
+      const { transaction } = await changeStatusTx.prepareTransactionAsync({
+        args: [campaignId, newStatus, null],
+        value: 0n,
+        ...params,
+      });
+      signAndSend(transaction, {
+        onSuccess: () => setLoading(''),
+        onError: () => setLoading(''),
+      });
+    } catch {
+      setLoading('');
+    }
+  };
+
+  const handleSubmitEvaluation = async (campaignId: number, userHash: string, status: Status, metadata: string) => {
+    console.log('handleSubmitEvaluation');
+    console.log('campaignId:', campaignId);
+    console.log('userHash:', userHash);
+    console.log('status:', status);
+    console.log('metadata:', metadata);
+    console.log('signless.isActive:', signless.isActive);
+
+    if (!signless.isActive) return;
+    setLoading('submit');
+    console.log('handleSubmitEvaluation->setLoading(submit)');
+    try {
+      const { sessionForAccount, ...params } = await prepareEzTransactionParams(false);
+      if (!sessionForAccount) throw new Error('No session');
+      const { transaction } = await submitEvalTx.prepareTransactionAsync({
+        args: [campaignId, userHash, status, metadata, null],
+        value: 0n,
+        ...params,
+      });
+      signAndSend(transaction, {
+        onSuccess: () => setLoading(''),
+        onError: () => setLoading(''),
+      });
+    } catch {
+      setLoading('');
+    }
+  };
+
+  const handleUpdateMetadata = async (campaignId: number, newMetadata: string) => {
+    if (!signless.isActive) return;
+    setLoading('meta');
+    try {
+      const { sessionForAccount, ...params } = await prepareEzTransactionParams(false);
+      if (!sessionForAccount) throw new Error('No session');
+      const { transaction } = await updateMetaTx.prepareTransactionAsync({
+        args: [campaignId, newMetadata, null],
+        value: 0n,
+        ...params,
+      });
+      signAndSend(transaction, {
+        onSuccess: () => setLoading(''),
+        onError: () => setLoading(''),
+      });
+    } catch {
+      setLoading('');
     }
   };
 
