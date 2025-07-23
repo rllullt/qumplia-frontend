@@ -1,9 +1,22 @@
 import React, { useState } from 'react';
+import { Status } from '@/hocs/lib';
 
 interface FormData {
   name: string;
   description: string;
   apiKey: string;
+}
+
+export const ALLOWED_STATUS: Record<string, Status> = {
+  'Aprobado': 'Approved',
+  'Pendiente': 'Pending',
+  'Rechazado': 'Rejected',
+  'Approved': 'Approved',
+  'Pending': 'Pending',
+  'Rejected': 'Rejected',
+  'approved': 'Approved',
+  'pending': 'Pending',
+  'rejected': 'Rejected',
 }
 
 function CampaignsPage() {
