@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { CampaignCardProps } from '@/components/Dashboard/CampaignCard';
 import CampaignCards from '@/components/Dashboard/CampaignCards';
+import { CampaignDetails } from '@/pages/Dashboard/CampaignsDetailPage';
 
 function CampaignsPage() {
-  const [campaignsData, setCampaignsData] = useState<CampaignCardProps[]>([]);
+  const [campaignsData, setCampaignsData] = useState<CampaignDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const accessToken = localStorage.getItem('access_token');
@@ -25,7 +25,7 @@ function CampaignsPage() {
           throw new Error('Error fetching campaigns');
         }
 
-        const data: CampaignCardProps[] = await response.json();
+        const data: CampaignDetails[] = await response.json();
         setCampaignsData(data);
       } catch (error) {
         setError((error as Error).message);

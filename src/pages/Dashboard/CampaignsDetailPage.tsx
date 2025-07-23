@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import CampaignEditor from '@/components/Dashboard/CampaignEditor';
+import { ALLOWED_STATUS } from '@/pages/Dashboard/NewCampaignPage';
 
-interface CampaignDetails {
+type CampaignStatus = 'Pending' | 'Approved' | 'Rejected';
+
+export interface CampaignDetails {
   id: string;
   name: string;
   description: string;
   creation_date: string;
   update_date: string;
-  status: string;
+  status: CampaignStatus;
   reason: string;
   created_by: string;
   last_time_checked_by: string;
@@ -45,6 +49,7 @@ function CampaignsDetailPage() {
         }
 
         const data: CampaignDetails = await response.json();
+        data.status = ALLOWED_STATUS[data['status']];
         console.log('Campaign details:', data);
         setCampaignDetails(data);
       } catch (err) {
@@ -72,6 +77,50 @@ function CampaignsDetailPage() {
   const firstImageUrl = campaignDetails.image_urls && campaignDetails.image_urls.length > 0
     ? campaignDetails.image_urls[0]
     : null;
+  
+  // Función que se pasará al editor para manejar el guardado
+  const handleSaveCampaign = async (updatedCampaign: CampaignDetails) => {
+    console.log('Guardando datos:', updatedCampaign);
+
+    try {
+      const sendingData = new FormData();
+      sendingData.append('name', updatedCampaign.name);
+      sendingData.append('description', updatedCampaign.description);
+      sendingData.append('status', updatedCampaign.status.toLowerCase());
+      sendingData.append('reason', updatedCampaign.reason);
+      console.log('Sending data:', sendingData);
+
+      const response = await fetch(`${apiUrl}/campaigns/${id}/`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Accept': 'application/json'
+        },
+        body: sendingData,
+      });
+
+      if (response.ok) {
+        response.json().then(data => {
+          console.log('Response data:', data);
+          if (data['status'].toLowerCase() !== "error") {
+            setCampaignDetails(updatedCampaign);
+            let campaign = data['campaign'];
+            // handleChangeStatus in blockchain
+          }
+          alert(`Campaña "${updatedCampaign.name}" actualizada con éxito!`);
+        }).catch(error => {
+          console.error('Error parsing JSON:', error);
+        });
+      } else {
+        throw new Error('Error en la respuesta del backend');
+      }
+    } catch (error) {
+      console.error(error);
+      // setStatus('error');
+    }
+  };
+
+  
 
   return (
     <div className="campaign-detail-page p-4">
@@ -101,6 +150,10 @@ function CampaignsDetailPage() {
       <p>Estado: {campaignDetails.status}</p>
       <p>Razón: {campaignDetails.reason}</p>
       {/* Aquí puedes mostrar el resto de los detalles de la campaña */}
+      <div className="card-actions justify-end mt-4">
+        {/* Aquí se usa el componente editor */}
+        <CampaignEditor campaignDetails={campaignDetails} onSave={handleSaveCampaign} />
+      </div>
     </div>
   );
 }
