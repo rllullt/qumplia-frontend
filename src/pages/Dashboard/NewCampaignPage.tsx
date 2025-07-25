@@ -4,7 +4,7 @@ import {
   useSignlessTransactions,
   useGaslessTransactions,
   usePrepareEzTransactionParams,
-  EzTransactionsSwitch,
+  // EzTransactionsSwitch,
 } from 'gear-ez-transactions';
 import { useSignAndSend } from '@/hooks/use-sign-and-send';
 import { Program, Status } from '@/hocs/lib';

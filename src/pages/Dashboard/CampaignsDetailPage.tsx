@@ -5,12 +5,12 @@ import {
   useSignlessTransactions,
   useGaslessTransactions,
   usePrepareEzTransactionParams,
-  EzTransactionsSwitch,
+  // EzTransactionsSwitch,
 } from 'gear-ez-transactions';
 import { useSignAndSend } from '@/hooks/use-sign-and-send';
 import { Program, Status } from '@/hocs/lib';
 import CampaignEditor from '@/components/Dashboard/CampaignEditor';
-import { ALLOWED_SIGNLESS_ACTIONS, ALLOWED_STATUS } from '@/pages/Dashboard/NewCampaignPage';
+import { ALLOWED_STATUS } from '@/pages/Dashboard/NewCampaignPage';
 
 type CampaignStatus = 'Pending' | 'Approved' | 'Rejected';
 
