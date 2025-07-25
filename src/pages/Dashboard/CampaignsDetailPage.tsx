@@ -1,7 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAccount, useProgram, usePrepareProgramTransaction } from '@gear-js/react-hooks';
+import {
+  useSignlessTransactions,
+  useGaslessTransactions,
+  usePrepareEzTransactionParams,
+  EzTransactionsSwitch,
+} from 'gear-ez-transactions';
+import { useSignAndSend } from '@/hooks/use-sign-and-send';
+import { Program, Status } from '@/hocs/lib';
 import CampaignEditor from '@/components/Dashboard/CampaignEditor';
-import { ALLOWED_STATUS } from '@/pages/Dashboard/NewCampaignPage';
+import { ALLOWED_SIGNLESS_ACTIONS, ALLOWED_STATUS } from '@/pages/Dashboard/NewCampaignPage';
 
 type CampaignStatus = 'Pending' | 'Approved' | 'Rejected';
 
@@ -19,17 +28,42 @@ export interface CampaignDetails {
 }
 
 function CampaignsDetailPage() {
-  const { id } = useParams<{ id: string }>();  // Obtaines the id from the URL
+  // ================================================================
+  // 1. REMEMBER TO EXECUTE EVERY HOOK AT THE FIRST PART OF THE FILE
+  // ================================================================
+  const { id } = useParams<{ id: string }>();
+  const { account } = useAccount();
+  const signless = useSignlessTransactions();
+  const gasless = useGaslessTransactions();
+
   const [campaignDetails, setCampaignDetails] = useState<CampaignDetails | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [voucherPending, setVoucherPending] = useState(false);
+  const hasRequestedOnceRef = useRef(false);
+  
   const accessToken = localStorage.getItem('access_token');
   const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+
+  const { data: program } = useProgram({
+    library: Program,
+    id: import.meta.env.VITE_PROGRAMID,
+  });
+
+  const changeStatusTx = usePrepareProgramTransaction({
+    program,
+    serviceName: 'service',
+    functionName: 'changeStatus',
+  });
+
+  const { prepareEzTransactionParams } = usePrepareEzTransactionParams();
+  const { signAndSend } = useSignAndSend();
 
   useEffect(() => {
     const fetchCampaignDetails = async () => {
       if (!id) return; // Si no hay ID, salimos
-      setLoading(true);
+      setLoading('fetchCampaignDetails');
       try {
         // Reemplaza con tu apiUrl y accessToken reales
         if (!accessToken) {
@@ -55,32 +89,60 @@ function CampaignsDetailPage() {
       } catch (err) {
         setError((err as Error).message);
       } finally {
-        setLoading(false);
+        setLoading('');
       }
     };
 
     fetchCampaignDetails();
   }, [id]);  // Depends on 'id': it is executed again if the id of the URL changes
 
-  if (loading) {
-    return <div>Cargando detalles de la campaña...</div>;
-  }
+  useEffect(() => {
+    hasRequestedOnceRef.current = false;
+  }, [account?.address]);
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  useEffect(() => {
+    if (!account?.address || !gasless.isEnabled || hasRequestedOnceRef.current) return;
 
-  if (!campaignDetails) {
-    return <div>Campaña no encontrada.</div>;
-  }
+    hasRequestedOnceRef.current = true;
+    setVoucherPending(true);
 
-  const firstImageUrl = campaignDetails.image_urls && campaignDetails.image_urls.length > 0
+    const requestVoucher = async () => {
+      try {
+        if (gasless.voucherStatus?.enabled) {
+          setVoucherPending(false);
+          return;
+        }
+        await gasless.requestVoucher(account.address);
+        let retries = 5;
+        while (retries-- > 0) {
+          await new Promise((res) => setTimeout(res, 300));
+          if (gasless.voucherStatus?.enabled) {
+            setVoucherPending(false);
+            return;
+          }
+        }
+        setVoucherPending(false);
+      } catch {
+        hasRequestedOnceRef.current = false;
+        setVoucherPending(false);
+      }
+    };
+    void requestVoucher();
+  }, [account?.address, gasless.isEnabled]);
+
+  const firstImageUrl = campaignDetails && campaignDetails.image_urls && campaignDetails.image_urls.length > 0
     ? campaignDetails.image_urls[0]
     : null;
+  
+  // ================================================================
+  // 2. RENDER LOGIC AND HANDLER FUNCTIONS
+  // ================================================================
   
   // Función que se pasará al editor para manejar el guardado
   const handleSaveCampaign = async (updatedCampaign: CampaignDetails) => {
     console.log('Guardando datos:', updatedCampaign);
+
+    setStatus('loading');
 
     try {
       const sendingData = new FormData();
@@ -100,12 +162,12 @@ function CampaignsDetailPage() {
       });
 
       if (response.ok) {
-        response.json().then(data => {
-          console.log('Response data:', data);
-          if (data['status'].toLowerCase() !== "error") {
+        setStatus('success');
+        response.json().then(campaign => {
+          console.log('Response data:', campaign);
+          if (campaign['status'].toLowerCase() !== "error") {
             setCampaignDetails(updatedCampaign);
-            let campaign = data['campaign'];
-            // handleChangeStatus in blockchain
+            handleChangeStatus(campaign['id'], ALLOWED_STATUS[campaign['status']]);
           }
           alert(`Campaña "${updatedCampaign.name}" actualizada con éxito!`);
         }).catch(error => {
@@ -116,11 +178,46 @@ function CampaignsDetailPage() {
       }
     } catch (error) {
       console.error(error);
-      // setStatus('error');
+      setStatus('error');
     }
   };
-
   
+  const handleChangeStatus = async (campaignId: number, newStatus: Status) => {
+      if (!signless.isActive) return;
+      setLoading('change');
+      try {
+        const { sessionForAccount, ...params } = await prepareEzTransactionParams(false);
+        if (!sessionForAccount) throw new Error('No session');
+        const { transaction } = await changeStatusTx.prepareTransactionAsync({
+          args: [campaignId, newStatus, null],
+          value: 0n,
+          ...params,
+        });
+        signAndSend(transaction, {
+          onSuccess: () => setLoading(''),
+          onError: () => setLoading(''),
+        });
+      } catch {
+        setLoading('');
+      }
+    };
+  
+  // Anticipated returns
+  if (loading) {
+    return <div>Cargando detalles de la campaña...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!campaignDetails) {
+    return <div>Campaña no encontrada.</div>;
+  }
+  
+  // ================================================================
+  // 3. RETURN OF FINAL JSX
+  // ================================================================
 
   return (
     <div className="campaign-detail-page p-4">

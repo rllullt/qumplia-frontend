@@ -15,7 +15,7 @@ interface FormData {
   apiKey: string;
 }
 
-const ALLOWED_SIGNLESS_ACTIONS = ['ChangeStatus', 'SubmitEvaluation', 'UpdateMetadata'];
+export const ALLOWED_SIGNLESS_ACTIONS = ['ChangeStatus', 'SubmitEvaluation', 'UpdateMetadata'];
 export const ALLOWED_STATUS: Record<string, Status> = {
   'Aprobado': 'Approved',
   'Pendiente': 'Pending',
@@ -37,6 +37,15 @@ function CampaignsPage() {
   });
   const [preview, setPreview] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [loading, setLoading] = useState('');
+  const [voucherPending, setVoucherPending] = useState(false);
+  const hasRequestedOnceRef = useRef(false);
+  const [responseData, setResponseData] = useState<UploadResponse | null>(null);
+
+  const { account } = useAccount();
+  const signless = useSignlessTransactions();
+  const gasless = useGaslessTransactions();
+
 
   type UploadResponse = {
     message: string;
@@ -52,7 +61,59 @@ function CampaignsPage() {
     };
   };
 
-  const [responseData, setResponseData] = useState<UploadResponse | null>(null);
+  const { data: program } = useProgram({
+    library: Program,
+    id: import.meta.env.VITE_PROGRAMID,
+  });
+
+  const submitEvalTx = usePrepareProgramTransaction({
+    program,
+    serviceName: 'service',
+    functionName: 'submitEvaluation',
+  });
+
+  const updateMetaTx = usePrepareProgramTransaction({
+    program,
+    serviceName: 'service',
+    functionName: 'updateMetadata',
+  });
+
+  const { prepareEzTransactionParams } = usePrepareEzTransactionParams();
+  const { signAndSend } = useSignAndSend();
+
+  useEffect(() => {
+    hasRequestedOnceRef.current = false;
+  }, [account?.address]);
+
+  useEffect(() => {
+    if (!account?.address || !gasless.isEnabled || hasRequestedOnceRef.current) return;
+
+    hasRequestedOnceRef.current = true;
+    setVoucherPending(true);
+
+    const requestVoucher = async () => {
+      try {
+        if (gasless.voucherStatus?.enabled) {
+          setVoucherPending(false);
+          return;
+        }
+        await gasless.requestVoucher(account.address);
+        let retries = 5;
+        while (retries-- > 0) {
+          await new Promise((res) => setTimeout(res, 300));
+          if (gasless.voucherStatus?.enabled) {
+            setVoucherPending(false);
+            return;
+          }
+        }
+        setVoucherPending(false);
+      } catch {
+        hasRequestedOnceRef.current = false;
+        setVoucherPending(false);
+      }
+    };
+    void requestVoucher();
+  }, [account?.address, gasless.isEnabled, hasRequestedOnceRef.current]);
   
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
@@ -114,94 +175,6 @@ function CampaignsPage() {
     } catch (error) {
       console.error(error);
       setStatus('error');
-    }
-  };
-
-  const { account } = useAccount();
-  const signless = useSignlessTransactions();
-  const gasless = useGaslessTransactions();
-
-  const { data: program } = useProgram({
-    library: Program,
-    id: import.meta.env.VITE_PROGRAMID,
-  });
-
-  const changeStatusTx = usePrepareProgramTransaction({
-    program,
-    serviceName: 'service',
-    functionName: 'changeStatus',
-  });
-
-  const submitEvalTx = usePrepareProgramTransaction({
-    program,
-    serviceName: 'service',
-    functionName: 'submitEvaluation',
-  });
-
-  const updateMetaTx = usePrepareProgramTransaction({
-    program,
-    serviceName: 'service',
-    functionName: 'updateMetadata',
-  });
-
-  const { prepareEzTransactionParams } = usePrepareEzTransactionParams();
-  const { signAndSend } = useSignAndSend();
-
-  const [loading, setLoading] = useState('');
-  const [voucherPending, setVoucherPending] = useState(false);
-  const hasRequestedOnceRef = useRef(false);
-
-  useEffect(() => {
-    hasRequestedOnceRef.current = false;
-  }, [account?.address]);
-
-  useEffect(() => {
-    if (!account?.address || !gasless.isEnabled || hasRequestedOnceRef.current) return;
-
-    hasRequestedOnceRef.current = true;
-    setVoucherPending(true);
-
-    const requestVoucher = async () => {
-      try {
-        if (gasless.voucherStatus?.enabled) {
-          setVoucherPending(false);
-          return;
-        }
-        await gasless.requestVoucher(account.address);
-        let retries = 5;
-        while (retries-- > 0) {
-          await new Promise((res) => setTimeout(res, 300));
-          if (gasless.voucherStatus?.enabled) {
-            setVoucherPending(false);
-            return;
-          }
-        }
-        setVoucherPending(false);
-      } catch {
-        hasRequestedOnceRef.current = false;
-        setVoucherPending(false);
-      }
-    };
-    void requestVoucher();
-  }, [account?.address, gasless.isEnabled]);
-
-  const handleChangeStatus = async (campaignId: number, newStatus: Status) => {
-    if (!signless.isActive) return;
-    setLoading('change');
-    try {
-      const { sessionForAccount, ...params } = await prepareEzTransactionParams(false);
-      if (!sessionForAccount) throw new Error('No session');
-      const { transaction } = await changeStatusTx.prepareTransactionAsync({
-        args: [campaignId, newStatus, null],
-        value: 0n,
-        ...params,
-      });
-      signAndSend(transaction, {
-        onSuccess: () => setLoading(''),
-        onError: () => setLoading(''),
-      });
-    } catch {
-      setLoading('');
     }
   };
 
