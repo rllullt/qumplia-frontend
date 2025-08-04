@@ -42,6 +42,8 @@ function CampaignsDetailPage() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [voucherPending, setVoucherPending] = useState(false);
   const hasRequestedOnceRef = useRef(false);
+  console.log('status:', status);
+  console.log('voucherPending:', voucherPending);
   
   const accessToken = localStorage.getItem('access_token');
   const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
@@ -193,7 +195,7 @@ function CampaignsDetailPage() {
           value: 0n,
           ...params,
         });
-        signAndSend(transaction, {
+        signAndSend(transaction as any, {
           onSuccess: () => setLoading(''),
           onError: () => setLoading(''),
         });
