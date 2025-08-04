@@ -37,10 +37,10 @@ function CampaignsPage() {
   });
   const [preview, setPreview] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [loading, setLoading] = useState('');
   const [voucherPending, setVoucherPending] = useState(false);
   const hasRequestedOnceRef = useRef(false);
   const [responseData, setResponseData] = useState<UploadResponse | null>(null);
+  console.log('voucherPending:', voucherPending);
 
   const { account } = useAccount();
   const signless = useSignlessTransactions();
@@ -72,11 +72,11 @@ function CampaignsPage() {
     functionName: 'submitEvaluation',
   });
 
-  const updateMetaTx = usePrepareProgramTransaction({
-    program,
-    serviceName: 'service',
-    functionName: 'updateMetadata',
-  });
+  // const updateMetaTx = usePrepareProgramTransaction({
+  //   program,
+  //   serviceName: 'service',
+  //   functionName: 'updateMetadata',
+  // });
 
   const { prepareEzTransactionParams } = usePrepareEzTransactionParams();
   const { signAndSend } = useSignAndSend();
@@ -187,8 +187,8 @@ function CampaignsPage() {
     console.log('signless.isActive:', signless.isActive);
 
     if (!signless.isActive) return;
-    setLoading('submit');
-    console.log('handleSubmitEvaluation->setLoading(submit)');
+    setStatus('loading');
+    console.log('handleSubmitEvaluation->setStatus("loading")');
     try {
       const { sessionForAccount, ...params } = await prepareEzTransactionParams(false);
       if (!sessionForAccount) throw new Error('No session');
@@ -197,34 +197,34 @@ function CampaignsPage() {
         value: 0n,
         ...params,
       });
-      signAndSend(transaction, {
-        onSuccess: () => setLoading(''),
-        onError: () => setLoading(''),
+      signAndSend(transaction as any, {
+        onSuccess: () => setStatus('idle'),
+        onError: () => setStatus('error'),
       });
     } catch {
-      setLoading('');
+      setStatus('idle');
     }
   };
 
-  const handleUpdateMetadata = async (campaignId: number, newMetadata: string) => {
-    if (!signless.isActive) return;
-    setLoading('meta');
-    try {
-      const { sessionForAccount, ...params } = await prepareEzTransactionParams(false);
-      if (!sessionForAccount) throw new Error('No session');
-      const { transaction } = await updateMetaTx.prepareTransactionAsync({
-        args: [campaignId, newMetadata, null],
-        value: 0n,
-        ...params,
-      });
-      signAndSend(transaction, {
-        onSuccess: () => setLoading(''),
-        onError: () => setLoading(''),
-      });
-    } catch {
-      setLoading('');
-    }
-  };
+  // const handleUpdateMetadata = async (campaignId: number, newMetadata: string) => {
+  //   if (!signless.isActive) return;
+  //   setStatus('loading');
+  //   try {
+  //     const { sessionForAccount, ...params } = await prepareEzTransactionParams(false);
+  //     if (!sessionForAccount) throw new Error('No session');
+  //     const { transaction } = await updateMetaTx.prepareTransactionAsync({
+  //       args: [campaignId, newMetadata, null],
+  //       value: 0n,
+  //       ...params,
+  //     });
+  //     signAndSend(transaction as any, {
+  //       onSuccess: () => setStatus('idle'),
+  //       onError: () => setStatus('error'),
+  //     });
+  //   } catch {
+  //     setStatus('idle');
+  //   }
+  // };
 
   return (
     <div className="max-w-xl mx-auto">
