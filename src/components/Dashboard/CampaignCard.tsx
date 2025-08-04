@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { CampaignDetails } from '@/pages/Dashboard/CampaignsDetailPage';
 import { ALLOWED_STATUS } from '@/pages/Dashboard/NewCampaignPage';
 
 export interface CampaignCardProps {
@@ -10,7 +9,7 @@ export interface CampaignCardProps {
   reason: string;
 }
 
-function CampaignCard({ id, name, description, status, reason }: CampaignDetails) {
+function CampaignCard({ id, name, description, status, reason }: CampaignCardProps) {
   const cardClasses = `card card-compact bg-base-100 shadow-md border-l-4`;
   const shortReason = reason.length > 200 ? `${reason.slice(0, 200)}...` : reason;
 
