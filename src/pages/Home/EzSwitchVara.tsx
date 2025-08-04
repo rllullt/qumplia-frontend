@@ -92,7 +92,7 @@ function EzSwitchVara() {
         value: 0n,
         ...params,
       });
-      signAndSend(transaction, {
+      signAndSend(transaction as any, {
         onSuccess: () => setLoading(''),
         onError: () => setLoading(''),
       });
@@ -112,7 +112,7 @@ function EzSwitchVara() {
         value: 0n,
         ...params,
       });
-      signAndSend(transaction, {
+      signAndSend(transaction as any, {
         onSuccess: () => setLoading(''),
         onError: () => setLoading(''),
       });
@@ -132,7 +132,7 @@ function EzSwitchVara() {
         value: 0n,
         ...params,
       });
-      signAndSend(transaction, {
+      signAndSend(transaction as any, {
         onSuccess: () => setLoading(''),
         onError: () => setLoading(''),
       });
