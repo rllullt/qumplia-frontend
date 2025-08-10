@@ -52,6 +52,5 @@
   },
   "resolutions": {
     "@polkadot/types": "15.4.1"
-  },
-  "packageManager": "yarn@4.2.2"
+  }
 }
