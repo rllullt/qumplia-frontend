@@ -50,7 +50,7 @@ const Login: React.FC = () => {
       <h2>Iniciar Sesión</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <div>
-        <label htmlFor="username">Usuario:</label>
+        <label htmlFor="username">Username:</label>
         <input
           type="text"
           id="username"
@@ -59,7 +59,7 @@ const Login: React.FC = () => {
         />
       </div>
       <div>
-        <label htmlFor="password">Contraseña:</label>
+        <label htmlFor="password">Password:</label>
         <input
           type="password"
           id="password"
@@ -67,7 +67,7 @@ const Login: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <button onClick={handleLogin}>Iniciar Sesión</button>
+      <button onClick={handleLogin}>Sign in</button>
     </div>
   );
 };

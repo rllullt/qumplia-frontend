@@ -60,7 +60,8 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
             onClick={e => handleLinkClick('campaigns', e)}
             className={isActive('campaigns') ? 'font-semibold text-primary' : ''}
           >
-            Campañas
+            {/* Campañas */}
+            Campaigns
           </Link>
         </li>
         <li>
@@ -69,7 +70,8 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
             onClick={e => handleLinkClick('new-campaign', e)}
             className={isActive('new-campaign') ? 'font-semibold text-primary' : ''}
           >
-            Nueva campaña
+            {/* Nueva campaña */}
+            New Campaign
           </Link>
         </li>
         <li>

@@ -229,13 +229,13 @@ function CampaignsPage() {
   return (
     <div className="max-w-xl mx-auto">
       <div className="card bg-base-100 shadow-md p-6">
-        <h2 className="text-2xl font-bold mb-4">Nueva campaña</h2>
+        <h2 className="text-2xl font-bold mb-4">New campaign</h2>
 
         <input
           type="text"
           id="name"
           name="name"
-          placeholder="Nombre de la campaña"
+          placeholder="Name of the campaign"
           className="input input-bordered w-full mb-4"
           onChange={handleTextFieldChange}
         />
@@ -244,7 +244,7 @@ function CampaignsPage() {
           type="text"
           id="description"
           name="description"
-          placeholder="Descripción"
+          placeholder="Description"
           className="input input-bordered w-full mb-4"
           onChange={handleTextFieldChange}
         />

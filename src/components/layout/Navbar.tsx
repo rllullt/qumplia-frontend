@@ -31,7 +31,8 @@ function Navbar() {
       {/* Menú desktop */}
       <nav className="hidden lg:flex">
         <ul className="menu menu-horizontal px-1 items-center">
-          <li><Link to="/">Inicio</Link></li>
+          {/* <li><Link to="/">Inicio</Link></li> */}
+          <li><Link to="/">Home</Link></li>
           {/* <li><a>Nosotros</a></li> */}
           <li><Link to="/dashboard">Dashboard</Link></li>
           {/* <li><a>FAQ</a></li> */}

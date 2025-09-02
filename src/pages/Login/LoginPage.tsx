@@ -75,7 +75,7 @@ const LoginPage: React.FC = () => {
         </BaseNavbar>
       </div>
       <div>
-        <h2>Iniciar Sesión</h2>
+        <h2>Sign in</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <div>
           <label htmlFor="username">Username:</label>

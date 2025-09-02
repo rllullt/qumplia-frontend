@@ -223,7 +223,7 @@ function CampaignsDetailPage() {
 
   return (
     <div className="campaign-detail-page p-4">
-      <h1>Detalles de la Campaña: {campaignDetails.name}</h1>
+      <h1>Details of Campaign: {campaignDetails.name}</h1>
       {/* Rendedrs the image if available */}
       {firstImageUrl && (
         <div className="mb-6 flex justify-center items-center">
@@ -245,9 +245,9 @@ function CampaignsDetailPage() {
         </div>
       )}
       <p>ID: {campaignDetails.id}</p>
-      <p>Descripción: {campaignDetails.description}</p>
-      <p>Estado: {campaignDetails.status}</p>
-      <p>Razón: {campaignDetails.reason}</p>
+      <p>Description: {campaignDetails.description}</p>
+      <p>State: {campaignDetails.status}</p>
+      <p>Reason: {campaignDetails.reason}</p>
       {/* Aquí puedes mostrar el resto de los detalles de la campaña */}
       <div className="card-actions justify-end mt-4">
         {/* Aquí se usa el componente editor */}

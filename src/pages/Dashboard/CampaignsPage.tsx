@@ -54,7 +54,7 @@ function CampaignsPage() {
     <div className="drawer lg:drawer-open">
       <div className="drawer-content flex flex-col min-h-screen">
         <div className="p-6">
-          <h2 className="text-2xl font-semibold mb-4">Campañas</h2>
+          <h2 className="text-2xl font-semibold mb-4">Campaigns</h2>
           <CampaignCards data={campaignsData} />
           {/* Aquí puedes añadir más contenido del dashboard */}
         </div>
