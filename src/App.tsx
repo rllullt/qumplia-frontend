@@ -38,13 +38,16 @@ import { Routing } from '@/pages'; // Importa el componente Routing
 import { ApiLoader } from '@/components/loaders';
 import './App.css';
 import "@gear-js/vara-ui/dist/style.css";
+import useAuth from '@/hooks/useAuth';
 
-const isAuthenticated = localStorage.getItem('access_token') !== null;
-console.log('isAuthenticated:', isAuthenticated);
 
 function Component() {
   const { isApiReady } = useApi();
   const { isAccountReady } = useAccount();
+
+  // useAuth hook for “listening” when the token is stored into localStorage
+  const { isAuthenticated } = useAuth();
+  console.log('isAuthenticated:', isAuthenticated);
 
   const isAppReady = isApiReady && isAccountReady;
 

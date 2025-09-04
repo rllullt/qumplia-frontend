@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import useAuth  from "@/hooks/useAuth";
 
 interface FormData {
   username: string;
@@ -18,6 +19,8 @@ const LoginPage: React.FC = () => {
   });
   const [error, setError] = React.useState<string | null>(null);
   const navigate = useNavigate();  // hook for navigating between pages
+
+  const { login } = useAuth();
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.name, e.target.value);
@@ -53,8 +56,8 @@ const LoginPage: React.FC = () => {
 
       const data: LoginResponse = await response.json();
       // TODO: Store the token securely (using localStorage as example)
-      localStorage.setItem('access_token', data.access);
-      localStorage.setItem('refresh_token', data.refresh);
+      // Now we use the login function from useAuth
+      login(data.access, data.refresh);
       console.log('Login successful:', data);
       console.log('Local storage:', localStorage);
       navigate('/');
