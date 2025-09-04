@@ -26,9 +26,9 @@ const LoginPage: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });  // spread operator: ‘...’, generates a list from an object
   };
 
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  const handleSubmit = async () => {
-    // e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  // const handleSubmit = async () => {
+    e.preventDefault();
     setError(null); // Cleans any previous error message
 
     console.log('Form data:', formData);
@@ -68,42 +68,66 @@ const LoginPage: React.FC = () => {
 
 
   return (
-    <>
-      <div className='pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden'>
-        <BaseNavbar>
-          <Navbar />
-        </BaseNavbar>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
+      <div className="w-full max-w-sm p-8 space-y-6 bg-white rounded-lg shadow-lg dark:bg-gray-800">
+        <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
+          Sign in
+        </h2>
+
+        {error && (
+          <div className="p-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+            <span className="font-medium">Error:</span> {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="username"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
+              placeholder="Your username"
+              className="w-full input input-bordered input-primary"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              placeholder="Your password"
+              className="w-full input input-bordered input-primary"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full btn btn-primary"
+          >
+            Login
+          </button>
+        </form>
       </div>
-      <div>
-        <h2>Sign in</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={formData.username}
-            placeholder="Username"
-            className="input input-bordered"
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            placeholder="Password"
-            className="input input-bordered"
-            onChange={handleChange}
-          />
-        </div>
-        <button onClick={handleSubmit}>Login</button>
-      </div>
-    </>
+    </div>
   );
 }
 
