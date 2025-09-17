@@ -1,9 +1,10 @@
 # QumplIA Frontend
 
-Qumplia is a saas platform for finance industry (bank and insurances) that automatizes the normative compliance of promotions and campaigns using AI, registering every step of the process in blockchain, such as Vara Network.
+Qumplia is a SaaS platform for the finance industry (banks and insurance companies) that automates the regulatory compliance of promotions and campaigns using AI, registering every step of the process on a blockchain like the Vara Network.
 
-This frontend application is a web interface built for managing the CMF marketing campaigns, creating new ones and visualizing and editing the ones already created.
-It connects to QumplIA Backend (main API) and Vara Network to offer the user a smooth and reactive experience.
+This frontend application is a web interface built for managing marketing campaigns, allowing users to create new ones, and to visualize and edit existing ones.
+It connects to the QumplIA Backend (main API) and the Vara Network to offer a smooth and reactive user experience.
+
 
 
 ## Tech stack
